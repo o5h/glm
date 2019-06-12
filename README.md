@@ -1,2 +1,1 @@
-# glm
-gl math
+# GL Math
