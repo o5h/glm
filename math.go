@@ -87,3 +87,7 @@ func CrossProduct(v1, v2 *Vec3) Vec3 {
 		v1.Z*v2.X - v1.X*v2.Y,
 		v1.X*v2.Y - v1.Y*v2.X}
 }
+
+func Lerp(start, end, t float32) float32 {
+	return start*(1-t) + end*t
+}
