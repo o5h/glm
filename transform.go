@@ -11,6 +11,12 @@ type Transform struct {
 	Rotation Vec3 `json:"rot"`
 }
 
+func (t *Transform) Set(a *Transform) {
+	t.Position.Set(&a.Position)
+	t.Scale.Set(&a.Scale)
+	t.Rotation.Set(&a.Rotation)
+}
+
 func (t *Transform) SetSum(a, b *Transform) {
 	t.Position.SetSum(&a.Position, &b.Position)
 	t.Scale.SetMul(&a.Scale, &b.Scale)

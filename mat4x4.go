@@ -42,11 +42,11 @@ func (m *Mat4x4) SetIdentity() {
 	m[15] = 1
 }
 
-func (m *Mat4x4) LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float32) {
+func (m *Mat4x4) LookAt(eye, target, up *Vec3) {
 
-	fx := centerX - eyeX
-	fy := centerY - eyeY
-	fz := centerZ - eyeZ
+	fx := target.X - eye.X
+	fy := target.Y - eye.Y
+	fz := target.Z - eye.Z
 
 	// Normalize f
 	rlf := 1.0 / LengthXYZ(fx, fy, fz)
@@ -55,9 +55,9 @@ func (m *Mat4x4) LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, u
 	fz *= rlf
 
 	// compute s = f x up (x means "cross product")
-	sx := fy*upZ - fz*upY
-	sy := fz*upX - fx*upZ
-	sz := fx*upY - fy*upX
+	sx := fy*up.Z - fz*up.Y
+	sy := fz*up.X - fx*up.Z
+	sz := fx*up.Y - fy*up.X
 
 	// and normalize s
 	rls := 1.0 / LengthXYZ(sx, sy, sz)
@@ -91,9 +91,9 @@ func (m *Mat4x4) LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, u
 	// m[15] = 1.0
 
 	//m.Translate(-eyeX, -eyeY, -eyeZ)
-	m[12] = m[0]*-eyeX + m[4]*-eyeY + m[8]*-eyeZ
-	m[13] = m[1]*-eyeX + m[5]*-eyeY + m[9]*-eyeZ
-	m[14] = m[2]*-eyeX + m[6]*-eyeY + m[10]*-eyeZ
+	m[12] = m[0]*-eye.X + m[4]*-eye.Y + m[8]*-eye.Z
+	m[13] = m[1]*-eye.X + m[5]*-eye.Y + m[9]*-eye.Z
+	m[14] = m[2]*-eye.X + m[6]*-eye.Y + m[10]*-eye.Z
 	m[15] = 1.0
 
 }
@@ -252,28 +252,28 @@ func (m *Mat4x4) SetRotateZ(radians float32) {
 }
 
 // Transform Order is : Scale, Rotate, Translate
-func (m *Mat4x4) SetTransform(pos *Vec3, scale *Vec3, orient *Vec3) {
+func (m *Mat4x4) SetTransform(t *Transform) {
 	rot := Mat3x3{}
-	rot.SetFormEulerXYZ(orient.X, orient.Y, orient.Z)
+	rot.SetFormEulerXYZ(t.Rotation.X, t.Rotation.Y, t.Rotation.Z)
 
-	m[0] = scale.X * rot[0]
-	m[1] = scale.X * rot[1]
-	m[2] = scale.X * rot[2]
+	m[0] = t.Scale.X * rot[0]
+	m[1] = t.Scale.X * rot[1]
+	m[2] = t.Scale.X * rot[2]
 	m[3] = 0
 
-	m[4] = scale.Y * rot[3]
-	m[5] = scale.Y * rot[4]
-	m[6] = scale.Y * rot[5]
+	m[4] = t.Scale.Y * rot[3]
+	m[5] = t.Scale.Y * rot[4]
+	m[6] = t.Scale.Y * rot[5]
 	m[7] = 0
 
-	m[8] = scale.Z * rot[6]
-	m[9] = scale.Z * rot[7]
-	m[10] = scale.Z * rot[8]
+	m[8] = t.Scale.Z * rot[6]
+	m[9] = t.Scale.Z * rot[7]
+	m[10] = t.Scale.Z * rot[8]
 	m[11] = 0
 
-	m[12] = pos.X
-	m[13] = pos.Y
-	m[14] = pos.Z
+	m[12] = t.Position.X
+	m[13] = t.Position.Y
+	m[14] = t.Position.Z
 	m[15] = 1
 
 }
@@ -410,9 +410,9 @@ func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
 
 func (m *Mat4x4) MulVec4(v *Vec4) *Vec4 {
 	return &Vec4{
-		m[0]*v.X + m[4]*v.Y + m[8]*v.Z + m[12]*v.W,
-		m[1]*v.X + m[5]*v.Y + m[9]*v.Z + m[13]*v.W,
-		m[2]*v.X + m[6]*v.Y + m[10]*v.Z + m[14]*v.W,
-		m[3]*v.X + m[7]*v.Y + m[11]*v.Z + m[15]*v.W,
+		X: m[0]*v.X + m[4]*v.Y + m[8]*v.Z + m[12]*v.W,
+		Y: m[1]*v.X + m[5]*v.Y + m[9]*v.Z + m[13]*v.W,
+		Z: m[2]*v.X + m[6]*v.Y + m[10]*v.Z + m[14]*v.W,
+		W: m[3]*v.X + m[7]*v.Y + m[11]*v.Z + m[15]*v.W,
 	}
 }

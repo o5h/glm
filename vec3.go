@@ -17,6 +17,12 @@ func Vec3Sub(v1, v2 *Vec3) *Vec3 {
 	return &Vec3{v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z}
 }
 
+func (v *Vec3) Set(a *Vec3) {
+	v.X = a.X
+	v.Y = a.Y
+	v.Z = a.Z
+}
+
 func (v *Vec3) SetXYZ(x, y, z float32) {
 	v.X = x
 	v.Y = y
@@ -59,7 +65,7 @@ func (v *Vec3) Scale(factor float32) {
 	v.Z *= factor
 }
 
-func (v *Vec3) Add(x, y, z float32) {
+func (v *Vec3) AddXYZ(x, y, z float32) {
 	v.X += x
 	v.Y += y
 	v.Z += z

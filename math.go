@@ -1,6 +1,9 @@
 package glm
 
-import "math"
+import (
+	"math"
+	"unsafe"
+)
 
 const (
 	//Pi float32 Pi
@@ -47,6 +50,13 @@ func Sqrt(f float32) float32 {
 	return float32(math.Sqrt(float64(f)))
 }
 
+func fastInvSqrt(x float32) float32 {
+	i := *(*int32)(unsafe.Pointer(&x))
+	i = 0x5f3759df - i>>1
+	y := *(*float32)(unsafe.Pointer(&i))
+	return y * (1.5 - 0.5*x*y*y)
+}
+
 func Abs(f float32) float32 {
 	if f > 0 {
 		return f
@@ -90,4 +100,15 @@ func CrossProduct(v1, v2 *Vec3) Vec3 {
 
 func Lerp(start, end, t float32) float32 {
 	return start*(1-t) + end*t
+}
+
+func NextPow2(x uint32) uint32 {
+	x--
+	x |= x >> 1
+	x |= x >> 2
+	x |= x >> 4
+	x |= x >> 8
+	x |= x >> 16
+	x++
+	return x
 }
