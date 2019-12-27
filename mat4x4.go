@@ -271,14 +271,14 @@ func (m *Mat4x4) SetTransform(t *Transform) {
 	m[10] = t.Scale.Z * rot[8]
 	m[11] = 0
 
-	m[12] = t.Position.X
-	m[13] = t.Position.Y
-	m[14] = t.Position.Z
+	m[12] = t.Location.X
+	m[13] = t.Location.Y
+	m[14] = t.Location.Z
 	m[15] = 1
 
 }
 
-func (m *Mat4x4) Transform2(position *Vec3, scale *Vec3, orient *Quat) {
+func (m *Mat4x4) Transform2(location *Vec3, scale *Vec3, orient *Quat) {
 	rot := Mat3x3{}
 	rot.FromQuaternion(orient)
 
@@ -291,17 +291,17 @@ func (m *Mat4x4) Transform2(position *Vec3, scale *Vec3, orient *Quat) {
 	m[0] = scale.X * rot[0]
 	m[1] = scale.Y * rot[1]
 	m[2] = scale.Z * rot[2]
-	m[3] = position.X
+	m[3] = location.X
 
 	m[4] = scale.X * rot[3]
 	m[5] = scale.Y * rot[4]
 	m[6] = scale.Z * rot[5]
-	m[7] = position.Y
+	m[7] = location.Y
 
 	m[8] = scale.X * rot[6]
 	m[9] = scale.Y * rot[7]
 	m[10] = scale.Z * rot[8]
-	m[11] = position.Z
+	m[11] = location.Z
 
 	// No projection term
 	m[12] = 0

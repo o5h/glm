@@ -102,6 +102,10 @@ func Lerp(start, end, t float32) float32 {
 	return start*(1-t) + end*t
 }
 
+func Clamp(value, min, max float32) float32 {
+	return Max(min, Min(value, max))
+}
+
 func NextPow2(x uint32) uint32 {
 	x--
 	x |= x >> 1

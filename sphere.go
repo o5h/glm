@@ -31,6 +31,12 @@ func (s *Sphere) ContainsVec3(k *Vec3) bool {
 	return s.Center.DistanceToSquared(k) <= s.Radius*s.Radius
 }
 
+func (s *Sphere) IntersectSphere(o *Sphere) bool {
+	ls := LengthSquared(s.Center.X-o.Center.X, s.Center.Y-o.Center.Y, s.Center.Z-o.Center.Z)
+	rs := s.Radius*s.Radius + o.Radius*o.Radius
+	return ls < rs
+}
+
 func (s *Sphere) String() string {
 	return fmt.Sprintf("%v %v", s.Center, s.Radius)
 }
