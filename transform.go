@@ -20,5 +20,5 @@ func (t *Transform) Set(a *Transform) {
 func (t *Transform) SetSum(a, b *Transform) {
 	t.Location.SetSum(&a.Location, &b.Location)
 	t.Scale.SetMul(&a.Scale, &b.Scale)
-	t.Rotation.SetMul(&a.Rotation, &b.Rotation)
+	t.Rotation.SetSum(&a.Rotation, &b.Rotation)
 }
