@@ -10,6 +10,12 @@ type Vec3 struct {
 	Z float32
 }
 
+func (v *Vec3) SetXYZ(x, y, z float32) {
+	v.X = x
+	v.Y = y
+	v.Z = z
+}
+
 func (v *Vec3) SetSum(a, b *Vec3) {
 	v.X = a.X + b.X
 	v.Y = a.Y + b.Y

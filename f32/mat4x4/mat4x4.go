@@ -9,6 +9,7 @@ import (
 	"github.com/o5h/glm/f32/quat"
 	"github.com/o5h/glm/f32/transform3d"
 	"github.com/o5h/glm/f32/vec3"
+	"github.com/o5h/glm/f32/vec4"
 )
 
 //  | 0  4  8  12 |
@@ -353,7 +354,7 @@ func (m *Mat4x4) String() string {
 		m[3], m[7], m[11], m[15])
 }
 
-func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
+func (m *Mat4x4) CopyInverseFrom(src Mat4x4) error {
 	a00 := src[0]
 	a01 := src[1]
 	a02 := src[2]
@@ -386,7 +387,7 @@ func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
 
 	det := b00*b11 - b01*b10 + b02*b09 + b03*b08 - b04*b07 + b05*b06
 	if det == 0.0 {
-		*m = *src
+		*m = src
 		return errors.New("copyInverseFrom: null determinant")
 	}
 	invDet := 1.0 / det
@@ -411,8 +412,8 @@ func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
 	return nil
 }
 
-func (m *Mat4x4) MulVec4(v quat.Quat) quat.Quat {
-	return quat.Quat{
+func (m *Mat4x4) MulVec4(v vec4.Vec4) vec4.Vec4 {
+	return vec4.Vec4{
 		X: m[0]*v.X + m[4]*v.Y + m[8]*v.Z + m[12]*v.W,
 		Y: m[1]*v.X + m[5]*v.Y + m[9]*v.Z + m[13]*v.W,
 		Z: m[2]*v.X + m[6]*v.Y + m[10]*v.Z + m[14]*v.W,
