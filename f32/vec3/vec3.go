@@ -58,3 +58,16 @@ func (v *Vec3) Normalize() {
 	v.Y *= f
 	v.Z *= f
 }
+
+func Vec3Equals(v1, v2 *Vec3) bool {
+	if v1 == nil && v2 == nil {
+		return true
+	}
+	if v1 == nil || v2 == nil {
+		return false
+	}
+	if v1.DistanceTo(v2) < math.Epsilon {
+		return true
+	}
+	return false
+}
