@@ -1,9 +1,4 @@
-package mat3x3
-
-import (
-	"github.com/o5h/glm/f32/math"
-	"github.com/o5h/glm/f32/quat"
-)
+package glm
 
 // 0  3  6
 // 1  4  7
@@ -30,7 +25,7 @@ func (m *Mat3x3) SetIdentity() {
 	m[8] = 1
 }
 
-func (m *Mat3x3) FromQuaternion(q *quat.Quat) {
+func (m *Mat3x3) FromQuaternion(q *Quat) {
 	xx := q.X * q.X
 	xy := q.X * q.Y
 	xz := q.X * q.Z
@@ -56,9 +51,9 @@ func (m *Mat3x3) FromQuaternion(q *quat.Quat) {
 }
 
 func (m *Mat3x3) SetFormEulerXYZ(angleX, angleY, angleZ float32) {
-	sinX, cosX := math.SinCos(angleX)
-	sinY, cosY := math.SinCos(angleY)
-	sinZ, cosZ := math.SinCos(angleZ)
+	sinX, cosX := SinCos(angleX)
+	sinY, cosY := SinCos(angleY)
+	sinZ, cosZ := SinCos(angleZ)
 
 	mSinX := -sinX
 	mSinY := -sinY

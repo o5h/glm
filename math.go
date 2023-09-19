@@ -1,4 +1,4 @@
-package math
+package glm
 
 import "math"
 
@@ -84,4 +84,22 @@ func NextPow2(x uint32) uint32 {
 	x |= x >> 16
 	x++
 	return x
+}
+
+func DotProduct(v1, v2 Vec3) float32 {
+	return v1.X*v2.X + v1.Y*v2.Y + v1.Z*v2.Z
+}
+
+func CrossProduct(v1, v2 Vec3) Vec3 {
+	return Vec3{
+		v1.Y*v2.Z - v1.Z*v2.Y,
+		v1.Z*v2.X - v1.X*v2.Y,
+		v1.X*v2.Y - v1.Y*v2.X}
+}
+
+func Abs(f float32) float32 {
+	if f > 0 {
+		return f
+	}
+	return -f
 }

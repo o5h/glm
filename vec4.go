@@ -1,4 +1,4 @@
-package vec4
+package glm
 
 type Vec4 struct {
 	X float32

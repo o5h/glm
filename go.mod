@@ -1,3 +1,3 @@
 module github.com/o5h/glm
 
-go 1.20
+go 1.21
