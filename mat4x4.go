@@ -13,7 +13,7 @@ import (
 
 type Mat4x4 [16]float32
 
-var Ident = Mat4x4{
+var Mat4x4Ident = Mat4x4{
 	1, 0, 0, 0,
 	0, 1, 0, 0,
 	0, 0, 1, 0,
@@ -250,7 +250,7 @@ func (m *Mat4x4) SetRotateZ(radians float32) {
 }
 
 // Transform Order is : Scale, Rotate, Translate
-func (m *Mat4x4) SetTransform(t *Transform3d) {
+func (m *Mat4x4) SetTransform(t *Transform) {
 	rot := Mat3x3{}
 	rot.SetFormEulerXYZ(t.Rotation.X, t.Rotation.Y, t.Rotation.Z)
 
@@ -269,9 +269,9 @@ func (m *Mat4x4) SetTransform(t *Transform3d) {
 	m[10] = t.Scale.Z * rot[8]
 	m[11] = 0
 
-	m[12] = t.Position.X
-	m[13] = t.Position.Y
-	m[14] = t.Position.Z
+	m[12] = t.Translation.X
+	m[13] = t.Translation.Y
+	m[14] = t.Translation.Z
 	m[15] = 1
 
 }
