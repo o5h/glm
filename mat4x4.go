@@ -252,7 +252,7 @@ func (m *Mat4x4) SetRotateZ(radians float32) {
 // Transform Order is : Scale, Rotate, Translate
 func (m *Mat4x4) SetTransform(t *Transform) {
 	rot := Mat3x3{}
-	rot.SetFormEulerXYZ(t.Rotation.X, t.Rotation.Y, t.Rotation.Z)
+	rot.FromQuaternion(&t.Rotation)
 
 	m[0] = t.Scale.X * rot[0]
 	m[1] = t.Scale.X * rot[1]
