@@ -10,3 +10,9 @@ type Transform struct {
 	Translation Vec3
 	Scale       Vec3
 }
+
+func (t *Transform) SetCombine(a, b *Transform) {
+	t.Rotation.SetMul(&a.Rotation, &b.Rotation)
+	t.Translation.SetSum(&a.Translation, &b.Translation)
+	t.Scale.SetMul(&a.Scale, &b.Scale)
+}
