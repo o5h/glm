@@ -4,16 +4,14 @@ type Quat struct {
 	X, Y, Z, W float32
 }
 
-func ZeroQuat() *Quat {
-	return &Quat{0, 0, 0, 1}
-}
+func ZeroQuat() *Quat { return &Quat{0, 0, 0, 1} }
 
 func (q *Quat) ToEuler() (yaw, pitch, roll float32) {
 	sqw := q.W * q.W
 	sqx := q.X * q.X
 	sqy := q.Y * q.Y
 	sqz := q.Z * q.Z
-	unit := sqx + sqy + sqz + sqw // if normalized is one, otherwise is correction factor
+	unit := sqx + sqy + sqz + sqw // if normalised is one, otherwise is correction factor
 	test := q.X*q.Y + q.Z*q.W
 	if test > 0.499*unit { // singularity at north pole
 		yaw = 2 * Atan2(q.X, q.W)

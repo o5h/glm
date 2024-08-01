@@ -6,7 +6,7 @@ package glm
 
 type Mat3x3 [9]float32
 
-var Mat3x3Identity = Mat3x3{
+var Mat3x3_Ident = Mat3x3{
 	1, 0, 0,
 	0, 1, 0,
 	0, 0, 1}

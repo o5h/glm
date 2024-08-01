@@ -5,8 +5,12 @@ type Ray struct {
 	Direction Vec3
 }
 
-func Cast(touch Vec2, origin Vec3, proj, view Mat4x4) *Ray {
-	rayClip := Vec4{X: touch.X, Y: touch.Y, Z: -1, W: 1}
+func RayCast(viewport, touch Vec2, origin Vec3, proj, view *Mat4x4) *Ray {
+	dx := 2*float32(touch.X)/float32(viewport.X) - 1
+	dy := 1 - 2*float32(touch.Y)/float32(viewport.Y)
+
+	rayClip := Vec4{X: dx, Y: dy, Z: -1, W: 1}
+
 	var inverseProj Mat4x4
 	inverseProj.CopyInverseFrom(proj)
 	rayEye := Vec4{
@@ -18,10 +22,9 @@ func Cast(touch Vec2, origin Vec3, proj, view Mat4x4) *Ray {
 	var inverseView Mat4x4
 	inverseView.CopyInverseFrom(view)
 	rayWor := inverseView.MulVec4(rayEye)
-
-	direction := Vec3{X: rayWor.X, Y: rayWor.Y, Z: rayWor.Z}
-	direction.Normalize()
-	return &Ray{
-		Origin:    origin,
-		Direction: direction}
+	r := Ray{}
+	r.Origin = origin
+	r.Direction.SetXYZ(rayWor.X, rayWor.Y, rayWor.Z)
+	r.Direction.Normalize()
+	return &r
 }

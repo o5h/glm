@@ -13,13 +13,17 @@ import (
 
 type Mat4x4 [16]float32
 
-var Mat4x4Ident = Mat4x4{
+var Mat4x4_Ident = Mat4x4{
 	1, 0, 0, 0,
 	0, 1, 0, 0,
 	0, 0, 1, 0,
 	0, 0, 0, 1}
 
-func (m *Mat4x4) SetIdentity() {
+func (m *Mat4x4) Ptr() uintptr {
+	return uintptr(unsafe.Pointer(&m[0]))
+}
+
+func (m Mat4x4) SetIdentity() {
 	m[0] = 1
 	m[1] = 0
 	m[2] = 0
@@ -252,7 +256,7 @@ func (m *Mat4x4) SetRotateZ(radians float32) {
 // Transform Order is : Scale, Rotate, Translate
 func (m *Mat4x4) SetTransform(t *Transform) {
 	rot := Mat3x3{}
-	rot.FromQuaternion(&t.Rotation)
+	rot.SetFormEulerXYZ(t.Rotation.X, t.Rotation.Y, t.Rotation.Z)
 
 	m[0] = t.Scale.X * rot[0]
 	m[1] = t.Scale.X * rot[1]
@@ -269,17 +273,11 @@ func (m *Mat4x4) SetTransform(t *Transform) {
 	m[10] = t.Scale.Z * rot[8]
 	m[11] = 0
 
-	m[12] = t.Translation.X
-	m[13] = t.Translation.Y
-	m[14] = t.Translation.Z
+	m[12] = t.Position.X
+	m[13] = t.Position.Y
+	m[14] = t.Position.Z
 	m[15] = 1
 
-}
-
-func (m *Mat4x4) SetPosition(pos Vec3) {
-	m[12] = pos.X
-	m[13] = pos.Y
-	m[14] = pos.Z
 }
 
 func (m *Mat4x4) Transform2(location *Vec3, scale *Vec3, orient *Quat) {
@@ -354,7 +352,7 @@ func (m *Mat4x4) String() string {
 		m[3], m[7], m[11], m[15])
 }
 
-func (m *Mat4x4) CopyInverseFrom(src Mat4x4) error {
+func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
 	a00 := src[0]
 	a01 := src[1]
 	a02 := src[2]
@@ -387,7 +385,7 @@ func (m *Mat4x4) CopyInverseFrom(src Mat4x4) error {
 
 	det := b00*b11 - b01*b10 + b02*b09 + b03*b08 - b04*b07 + b05*b06
 	if det == 0.0 {
-		*m = src
+		*m = *src
 		return errors.New("copyInverseFrom: null determinant")
 	}
 	invDet := 1.0 / det
@@ -420,5 +418,3 @@ func (m *Mat4x4) MulVec4(v Vec4) Vec4 {
 		W: m[3]*v.X + m[7]*v.Y + m[11]*v.Z + m[15]*v.W,
 	}
 }
-
-func (m *Mat4x4) Ptr() uintptr { return uintptr(unsafe.Pointer(&m[0])) }
