@@ -5,11 +5,9 @@ type Ray struct {
 	Direction Vec3
 }
 
-func RayCast(viewport, touch Vec2, origin Vec3, proj, view *Mat4x4) *Ray {
-	dx := 2*float32(touch.X)/float32(viewport.X) - 1
-	dy := 1 - 2*float32(touch.Y)/float32(viewport.Y)
+func RayCast(touch Vec2, origin Vec3, proj, view Mat4x4) *Ray {
 
-	rayClip := Vec4{X: dx, Y: dy, Z: -1, W: 1}
+	rayClip := Vec4{X: touch.X, Y: touch.Y, Z: -1, W: 1}
 
 	var inverseProj Mat4x4
 	inverseProj.CopyInverseFrom(proj)

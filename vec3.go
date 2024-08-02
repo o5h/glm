@@ -5,9 +5,7 @@ import (
 	"fmt"
 )
 
-type Vec3 struct {
-	X, Y, Z float32
-}
+type Vec3 struct{ X, Y, Z float32 }
 
 func Vec3Add(v1, v2 *Vec3) *Vec3 {
 	return &Vec3{v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z}

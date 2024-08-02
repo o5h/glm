@@ -352,7 +352,7 @@ func (m *Mat4x4) String() string {
 		m[3], m[7], m[11], m[15])
 }
 
-func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
+func (m *Mat4x4) CopyInverseFrom(src Mat4x4) error {
 	a00 := src[0]
 	a01 := src[1]
 	a02 := src[2]
@@ -385,7 +385,7 @@ func (m *Mat4x4) CopyInverseFrom(src *Mat4x4) error {
 
 	det := b00*b11 - b01*b10 + b02*b09 + b03*b08 - b04*b07 + b05*b06
 	if det == 0.0 {
-		*m = *src
+		*m = src
 		return errors.New("copyInverseFrom: null determinant")
 	}
 	invDet := 1.0 / det
