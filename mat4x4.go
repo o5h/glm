@@ -280,6 +280,7 @@ func (m *Mat4x4) SetTransform(t *Transform) {
 
 }
 
+// TODO: do not remember if this correct
 func (m *Mat4x4) Transform2(location *Vec3, scale *Vec3, orient *Quat) {
 	rot := Mat3x3{}
 	rot.FromQuaternion(orient)
